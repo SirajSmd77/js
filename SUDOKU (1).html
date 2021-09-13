@@ -1,0 +1,313 @@
+<html>
+  <head>
+    <title>Sudoku</title>
+  </head>
+
+  <style>
+    #container {
+      display: grid;
+      grid-template-columns: repeat(9, 11%);
+
+      margin-left: 25%;
+      margin-right: 25%;
+      margin-top: 10%;
+    }
+
+    input {
+      height: 60px;
+      text-align: center;
+      font-size: 130%;
+    }
+  </style>
+
+  <body>
+    <div id="container"></div>
+  </body>
+</html>
+
+<script>
+  //1. grid layout
+  //2. creating 81 boxes is too much of a work
+  //3. Use Js to create boxes/inputs
+
+  //accesss a html element in Js
+  
+
+  //2D Array
+
+  var sudoku=[[],[],[],[],[],[],[],[],[]]
+
+  //declaration of a task 
+  function createGrid(){
+
+  var myContainer = document.getElementById('container');
+
+  //nested loop
+  for (var i = 0; i < 9; i++) {
+    for (var j = 0; j < 9; j++) {
+      var myInput = document.createElement('input');
+
+      //we want to add position of an input box as id
+
+      myInput.id = `${i}${j}`;
+
+      //we need to generate random values
+
+      var number = Math.ceil(Math.random() * 9);
+
+      // add values inside my input boxes
+
+
+
+      //What row?
+
+      myInput.row=i
+
+      //what col? ( tracking purposes )
+
+      myInput.col=j
+
+    //row - 1, col - 1, value = 2
+
+
+    //Fix repetation
+
+    //isSafe is a function whch checks wheather a number is getting repeated or not.
+    
+    //acting like a firewall
+    if(isSafe(sudoku, i, j, number)){
+
+
+        //add the number to our html
+
+        myInput.value = number
+        myInput.readOnly=true
+
+
+    }
+
+    else{
+
+        //keep it empty
+
+        number=0
+
+        myInput.value=''
+
+
+    }
+    
+
+
+
+     sudoku[i][j]= number
+
+
+      myContainer.appendChild(myInput);
+
+
+      //accept input using event listner - oninput
+  //e - event
+      myInput.oninput= function(e){
+
+
+        checkAnswer(sudoku, e)
+
+      }
+
+
+    }
+  }
+
+  //console.log('sudoku:', sudoku)
+
+
+
+}
+
+
+//execute a function/task
+
+createGrid()
+
+
+
+
+//we had sudoku representation- HTML
+
+//we need sudoku representation - Js
+
+
+
+  //Day 2 Agenda
+
+  //1. Fix repetation 
+
+  //1.1 - no same nos in a row
+  //1.2 - no same nos in a coloumn
+  //1.3- no same no in a cell/box/mini-grid
+
+
+  //2. Accept input from user
+
+
+//checking for a number
+  //1. number 
+  //2. row
+  //3. coloumn
+  //4. sudoku
+
+//sudoku- grid
+//row - i
+//coloumn - J
+//num - number
+
+//isSafe(sudoku, i,j, number)
+
+//3,3,4
+
+
+
+
+function isSafe(grid, row, col, num){
+
+ //1. Fix repetation 
+
+  //1.1 - no same no's in a row
+  //1.2 - no same no's in a coloumn
+  //1.3- no same no in a cell/box/mini-grid
+
+
+  //step 1- check for row
+
+   for(var x=0;x<9;x++){
+    //check for a row and increment coloumns
+//grid[3][0]
+//grid[3][1]
+//grid[3][2]
+//grid[3][3]
+
+    if(grid[row][x]== num)
+    {
+
+        return false
+    }
+   }
+
+  //step 2 - check for coloumn
+
+//grid[0][2]
+//grid[1][2]
+//grid[2][2]
+//grid[3][2]
+
+   for(var y= 0; y < 9; y++)
+   {
+
+
+    if(grid[y][col]==num)
+   {
+        return false
+
+    }
+   }
+
+  // step 3- check for mini-grid/cell/box
+
+//start - [6][6]
+
+//end - [8][8]
+
+//[6,6] to [8,8]
+//3 elements  
+
+//0,1,2
+//0,1,2
+
+
+var startRow = row - (row%3) 
+var startCol = col - (col%3)
+
+for(var m = 0; m < 3; m++){
+
+    for(var n = 0; n < 3; n++){
+
+if(grid[m+startRow][n+startCol]== num){
+
+    return false
+
+}
+
+}
+
+}
+
+return true
+
+}
+
+
+function checkAnswer(grid, e){
+
+//checkAnswer runs when you input something 
+
+//you input inside of input box
+
+    var row = e.target.row
+
+
+    var col = e.target.col
+    var num = Number(e.data)
+    var id = e.target.id
+
+    if(num==''){
+
+        return false
+    }
+
+  //step 1- check for row
+
+   for(var x=0;x<9;x++){
+  
+
+    if(grid[row][x]== num)
+    {
+
+        showColors('red',id)
+        return false
+    }
+
+}
+
+
+showColors('green',id)
+
+return true
+
+
+}
+
+
+
+function showColors(color,id){
+
+
+  //DIY- Get reference to input element using getElementbyId.
+
+
+if(color=='red')
+{
+
+
+inp.style.backgroundColor='red'
+
+}
+
+
+//DIY- Write else condition
+
+}
+
+
+
+</script>
